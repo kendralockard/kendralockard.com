@@ -82,6 +82,9 @@ body {
   color: rgba(0, 229, 255, 0.5);
   text-decoration: none;
   transition: color 0.2s;
+  display: inline-block;
+  padding: 0.6rem 0.4rem;
+  margin: -0.6rem -0.4rem;
 }
 .nav-links a:hover,
 .nav-links a:focus-visible {
@@ -93,7 +96,7 @@ body {
 
 .identity {
   position: absolute;
-  left: 25%;
+  left: 30%;
   bottom: 25%;
   transform: translateX(-50%);
   display: flex;
@@ -120,18 +123,19 @@ body {
   white-space: nowrap;
 }
 
-/* ── About stage — sits directly on the background, no panel chrome ───────── */
+/* ── Reveal stage — sits directly on the background, no panel chrome ───────
+   Shared by any nav section (About, Work, ...) that replaces the identity
+   block via the shrink/grow scramble transition. `left` is set at runtime by
+   about.js to match identity's own left edge, so revealed text lines up with
+   where the name/role used to be. */
 
 .identity.hidden {
   visibility: hidden;
   pointer-events: none;
 }
 
-.about-stage {
+.reveal-stage {
   position: absolute;
-  left: 32%;
-  top: 38%;
-  transform: translate(-50%, -50%);
   width: min(620px, calc(100% - 3rem));
   display: flex;
   flex-direction: column;
@@ -140,24 +144,24 @@ body {
   pointer-events: none;
 }
 
-.about-stage.visible {
+.reveal-stage.visible {
   visibility: visible;
   pointer-events: auto;
 }
 
-.about-label {
+.reveal-label {
   font-family: "Avex", "Courier New", monospace;
   font-size: 0.8rem;
   letter-spacing: 0.2em;
   color: rgba(0, 229, 255, 0.5);
 }
 
-.about-content {
+.reveal-content {
   font-family: "Avex", "Courier New", monospace;
   font-size: 1rem;
   line-height: 1.75;
   letter-spacing: 0.02em;
-  color: rgba(0, 229, 255, 0.85);
+  color: #e8f4ff;
   white-space: pre-wrap;
 }
 
@@ -263,20 +267,16 @@ body {
     white-space: normal;
   }
 
-  .about-stage {
-    left: 1.5rem;
+  .reveal-stage {
     right: 1.5rem;
-    bottom: auto;
-    top: 50%;
-    transform: translateY(-50%);
     width: calc(100% - 3rem);
   }
 
-  .about-label {
+  .reveal-label {
     font-size: 0.65rem;
   }
 
-  .about-content {
+  .reveal-content {
     font-size: 0.85rem;
   }
 

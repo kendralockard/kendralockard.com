@@ -13,7 +13,7 @@
     <div class="ui">
       <header class="nav">
         <ul class="nav-links">
-          <li><a href="#work">Work</a></li>
+          <li><a href="#work" id="work-link">Work</a></li>
           <li><a href="#about" id="about-link">About</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
@@ -24,9 +24,14 @@
         <p class="role">// Software Engineer &middot; Web Developer</p>
       </div>
 
-      <div class="about-stage" id="about-stage" aria-hidden="true">
-        <p class="about-label">// About</p>
-        <div class="about-content" id="about-content"></div>
+      <div class="reveal-stage" id="work-stage" aria-hidden="true">
+        <p class="reveal-label" id="work-label">// Work</p>
+        <div class="reveal-content" id="work-content"></div>
+      </div>
+
+      <div class="reveal-stage" id="about-stage" aria-hidden="true">
+        <p class="reveal-label" id="about-label">// About</p>
+        <div class="reveal-content" id="about-content"></div>
       </div>
 
       <div class="status-group">

@@ -3,31 +3,54 @@
 
   const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const CHARSET =
-    "0123456789+-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const TICK_MS = 35;
-  const STEP_TICKS = 26; // roughly how many ticks a full grow/shrink/reveal takes, any length
+  const CHARSET = "+xo";
+  const TICK_MS = 25;
+  const STEP_TICKS = 18; // roughly how many ticks a full grow/shrink/reveal takes, any length
 
-  // Placeholder copy — swap for the real bio when ready.
+  // Placeholder copy — swap for the real content when ready.
   const ABOUT_TEXT = `This is placeholder copy standing in for the real bio.
 
 It exists to test how the reveal handles a couple of short
 paragraphs, some punctuation, and line breaks before the
 real content goes in.`;
 
-  const link = document.getElementById("about-link");
+  const WORK_TEXT = `This is placeholder copy standing in for real project write-ups.
+
+It exists to test how the reveal handles a couple of short
+paragraphs before real work samples go in.`;
+
   const identity = document.querySelector(".identity");
   const nameEl = document.querySelector(".name");
   const roleEl = document.querySelector(".role");
-  const stage = document.getElementById("about-stage");
-  const stageContent = document.getElementById("about-content");
 
-  if (!link || !identity || !nameEl || !roleEl || !stage || !stageContent) {
-    return;
-  }
+  if (!identity || !nameEl || !roleEl) return;
 
-  let shown = false;
+  const sections = {
+    about: {
+      link: document.getElementById("about-link"),
+      stage: document.getElementById("about-stage"),
+      label: document.getElementById("about-label"),
+      content: document.getElementById("about-content"),
+      text: ABOUT_TEXT,
+    },
+    work: {
+      link: document.getElementById("work-link"),
+      stage: document.getElementById("work-stage"),
+      label: document.getElementById("work-label"),
+      content: document.getElementById("work-content"),
+      text: WORK_TEXT,
+    },
+  };
+
+  // Capture each label's original text once, up front — it gets scrambled
+  // away and regrown, so we can't rely on reading it back from the DOM later.
+  Object.values(sections).forEach((s) => {
+    if (s.label) s.labelText = s.label.textContent;
+  });
+
+  let current = null; // null | "about" | "work"
   let busy = false;
+  let positionFrozen = false;
 
   function randChar() {
     return CHARSET[(Math.random() * CHARSET.length) | 0];
@@ -111,39 +134,117 @@ real content goes in.`;
     shrinkStep();
   }
 
-  function goToAbout() {
-    busy = true;
+  // .identity is centered/anchored via a transform (translateX on desktop,
+  // translateY on mobile), so as the name/role shrink and the block's size
+  // changes, that transform would keep re-centering it — reading as a drift.
+  // Freeze its current on-screen position (both axes, whichever transform was
+  // in play) once, and pin every section's stage to that same top/left so
+  // switching between About and Work — which have different line counts —
+  // never shifts position (previously each stage centered itself via its own
+  // height, so a taller/shorter block landed at a different top edge).
+  function freezePosition() {
+    if (positionFrozen) return;
+    positionFrozen = true;
+    const rect = identity.getBoundingClientRect();
+    identity.style.left = `${rect.left}px`;
+    identity.style.top = `${rect.top}px`;
+    identity.style.transform = "none";
+    const stageTop = Math.max(24, rect.top - 40);
+    Object.values(sections).forEach((s) => {
+      s.stage.style.left = `${rect.left}px`;
+      s.stage.style.top = `${stageTop}px`;
+    });
+  }
+
+  function shrinkSection(section, done) {
+    let remaining = 2;
+    function next() {
+      if (--remaining > 0) return;
+      section.stage.classList.remove("visible");
+      section.stage.setAttribute("aria-hidden", "true");
+      done();
+    }
+    shrinkOut(section.label, section.labelText, next);
+    shrinkOut(section.content, section.content.textContent, next);
+  }
+
+  function growSection(section, done) {
+    section.stage.classList.add("visible");
+    section.stage.setAttribute("aria-hidden", "false");
+    let remaining = 2;
+    function next() {
+      if (--remaining === 0) done();
+    }
+    growIn(section.label, section.labelText, next);
+    growIn(section.content, section.text, next);
+  }
+
+  // First-ever reveal: shrink the name/role away while growing `section` in
+  // at the same time.
+  function enterFromIdentity(section) {
+    freezePosition();
 
     const nameOriginal = Array.from(nameEl.childNodes);
     const roleOriginal = Array.from(roleEl.childNodes);
     const nameText = nameEl.textContent;
     const roleText = roleEl.textContent;
 
-    let remaining = 2;
+    let tasksRemaining = 4;
+    function taskDone() {
+      if (--tasksRemaining === 0) busy = false;
+    }
+
+    let shrinkRemaining = 2;
     function afterShrink() {
-      if (--remaining > 0) return;
+      if (--shrinkRemaining > 0) return;
       identity.classList.add("hidden");
-      // Restore the real DOM (e.g. .role's hover-scramble spans) while hidden.
+      // Restore the real DOM (e.g. .role's hover-scramble spans), now hidden.
       nameEl.innerHTML = "";
       nameOriginal.forEach((n) => nameEl.appendChild(n));
       roleEl.innerHTML = "";
       roleOriginal.forEach((n) => roleEl.appendChild(n));
+    }
 
-      stage.classList.add("visible");
-      stage.setAttribute("aria-hidden", "false");
-      growIn(stageContent, ABOUT_TEXT, () => {
-        busy = false;
+    shrinkOut(nameEl, nameText, () => {
+      afterShrink();
+      taskDone();
+    });
+    shrinkOut(roleEl, roleText, () => {
+      afterShrink();
+      taskDone();
+    });
+
+    section.stage.classList.add("visible");
+    section.stage.setAttribute("aria-hidden", "false");
+    growIn(section.label, section.labelText, taskDone);
+    growIn(section.content, section.text, taskDone);
+  }
+
+  function enterSection(key) {
+    if (busy || current === key) return;
+    busy = true;
+
+    if (current === null) {
+      enterFromIdentity(sections[key]);
+    } else {
+      const from = sections[current];
+      shrinkSection(from, () => {
+        growSection(sections[key], () => {
+          busy = false;
+        });
       });
     }
 
-    shrinkOut(nameEl, nameText, afterShrink);
-    shrinkOut(roleEl, roleText, afterShrink);
+    current = key;
   }
 
-  link.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (busy || shown) return;
-    shown = true;
-    goToAbout();
+  Object.entries(sections).forEach(([key, section]) => {
+    if (!section.link || !section.stage || !section.label || !section.content) {
+      return;
+    }
+    section.link.addEventListener("click", (e) => {
+      e.preventDefault();
+      enterSection(key);
+    });
   });
 })();
