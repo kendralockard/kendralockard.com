@@ -92,13 +92,13 @@ body {
   outline: none;
 }
 
-/* ── Identity — centered in lower-left quadrant ───────────────────────────── */
+/* ── Identity — vertically centered, left-of-center ───────────────────────── */
 
 .identity {
   position: absolute;
   left: 30%;
-  bottom: 25%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   gap: 0.45rem;

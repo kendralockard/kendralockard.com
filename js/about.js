@@ -3,7 +3,7 @@
 
   const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const CHARSET = "+xo";
+  const CHARSET = "+xo10";
   const TICK_MS = 25;
   const STEP_TICKS = 18; // roughly how many ticks a full grow/shrink/cross-scramble takes, any length
   const PRESCRAMBLE_TICKS = 12; // ticks of pure randomization before a lock sweep starts resolving
@@ -191,11 +191,25 @@ paragraphs before real work samples go in.`;
     prescramble(PRESCRAMBLE_TICKS);
   }
 
+  // Measures how tall the stage would render with the given text, without
+  // ever showing it (visibility:hidden still lays out and can be measured).
+  function measureStageHeight(labelText, contentText) {
+    stageLabel.textContent = labelText;
+    stageContent.textContent = contentText;
+    const height = stage.offsetHeight;
+    stageLabel.textContent = "";
+    stageContent.textContent = "";
+    return height;
+  }
+
   // .identity is centered/anchored via a transform (translateX on desktop,
   // translateY on mobile), so as the name/role shrink and the block's size
   // changes, that transform would keep re-centering it — reading as a drift.
   // Freeze its current on-screen position (both axes, whichever transform was
-  // in play) once, and pin the reveal stage to that same top/left.
+  // in play) once. The reveal stage gets a fixed top too — computed from a
+  // true vertical center rather than tied to identity — using the taller of
+  // About/Work's rendered heights, so both land at the exact same spot
+  // instead of each self-centering around its own (different) height.
   function freezePosition() {
     if (positionFrozen) return;
     positionFrozen = true;
@@ -203,8 +217,12 @@ paragraphs before real work samples go in.`;
     identity.style.left = `${rect.left}px`;
     identity.style.top = `${rect.top}px`;
     identity.style.transform = "none";
+
     stage.style.left = `${rect.left}px`;
-    stage.style.top = `${Math.max(24, rect.top - 40)}px`;
+    const maxHeight = Math.max(
+      ...Object.values(sections).map((s) => measureStageHeight(s.labelText, s.text)),
+    );
+    stage.style.top = `${Math.max(24, (window.innerHeight - maxHeight) / 2)}px`;
   }
 
   // First-ever reveal: shrink the name/role away while growing `section` in
