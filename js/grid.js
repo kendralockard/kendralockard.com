@@ -16,7 +16,7 @@
   const PERSP_D = 900; // perspective distance — larger = flatter
 
   // ── State ───────────────────────────────────────────────────────────────────
-  const LAG = 0.05; // lerp factor — lower = more trail, higher = snappier
+  const LAG = 0.04; // lerp factor — lower = more trail, higher = snappier
 
   let W, H;
   let rawMx = -9999,
@@ -74,13 +74,13 @@
     if (mouseIn && !REDUCED) {
       mx += (rawMx - mx) * LAG;
       my += (rawMy - my) * LAG;
-      panX += ((rawMx / W - 0.5) * MAX_PAN * 2 - panX) * 0.02;
-      panY += ((rawMy / H - 0.5) * MAX_PAN * 2 - panY) * 0.02;
-      tilt += ((rawMy / H - 0.5) * MAX_TILT * 2 - tilt) * 0.02;
+      panX += ((rawMx / W - 0.5) * MAX_PAN * 2 - panX) * 0.012;
+      panY += ((rawMy / H - 0.5) * MAX_PAN * 2 - panY) * 0.012;
+      tilt += ((rawMy / H - 0.5) * MAX_TILT * 2 - tilt) * 0.012;
     } else {
-      panX += (0 - panX) * 0.02;
-      panY += (0 - panY) * 0.02;
-      tilt += (0 - tilt) * 0.02;
+      panX += (0 - panX) * 0.012;
+      panY += (0 - panY) * 0.012;
+      tilt += (0 - tilt) * 0.012;
     }
 
     const target = mouseIn && !REDUCED ? 1 : 0;
@@ -158,9 +158,10 @@
     if (el) el.textContent = `X:${fmt(xv)} · Y:${fmt(yv)}`;
   });
 
-  document.body.addEventListener("mouseenter", () => {
+  document.body.addEventListener("mouseenter", (e) => {
     mouseIn = true;
-    // Snap lagged position to current so there's no slide-in on first entry
+    rawMx = e.clientX;
+    rawMy = e.clientY;
     mx = rawMx;
     my = rawMy;
   });
