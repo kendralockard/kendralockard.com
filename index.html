@@ -14,7 +14,7 @@
       <header class="nav">
         <ul class="nav-links">
           <li><a href="#work">Work</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="#about" id="about-link">About</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </header>
@@ -22,6 +22,11 @@
       <div class="identity">
         <h1 class="name">Kendra Lockard</h1>
         <p class="role">// Software Engineer &middot; Web Developer</p>
+      </div>
+
+      <div class="about-stage" id="about-stage" aria-hidden="true">
+        <p class="about-label">// About</p>
+        <div class="about-content" id="about-content"></div>
       </div>
 
       <div class="status-group">
@@ -32,5 +37,6 @@
     </div>
 
     <script src="js/grid.js"></script>
+    <script src="js/about.js"></script>
   </body>
 </html>

@@ -120,6 +120,47 @@ body {
   white-space: nowrap;
 }
 
+/* ── About stage — sits directly on the background, no panel chrome ───────── */
+
+.identity.hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.about-stage {
+  position: absolute;
+  left: 32%;
+  top: 38%;
+  transform: translate(-50%, -50%);
+  width: min(620px, calc(100% - 3rem));
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.about-stage.visible {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.about-label {
+  font-family: "Avex", "Courier New", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  color: rgba(0, 229, 255, 0.5);
+}
+
+.about-content {
+  font-family: "Avex", "Courier New", monospace;
+  font-size: 1rem;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  color: rgba(0, 229, 255, 0.85);
+  white-space: pre-wrap;
+}
+
 /* ── Status — bottom right ────────────────────────────────────────────────── */
 
 .status-group {
@@ -220,6 +261,23 @@ body {
   .role {
     font-size: 0.8rem;
     white-space: normal;
+  }
+
+  .about-stage {
+    left: 1.5rem;
+    right: 1.5rem;
+    bottom: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc(100% - 3rem);
+  }
+
+  .about-label {
+    font-size: 0.65rem;
+  }
+
+  .about-content {
+    font-size: 0.85rem;
   }
 
   .status-group {
