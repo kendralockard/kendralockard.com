@@ -11,7 +11,7 @@
   const MAX_DISP = 70; // max push distance
   const SEG = 10; // px between curve sample points — every pixel sampled
   const BASE_A = 0.28; // base line opacity
-  const MAX_PAN = 55; // max grid pan offset in px
+  const MAX_PAN = 0; // max grid pan offset in px
   const MAX_TILT = 0.22; // max tilt angle in radians (~12.5°)
   const PERSP_D = 900; // perspective distance — larger = flatter
 
