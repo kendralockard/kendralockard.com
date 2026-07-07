@@ -5,7 +5,8 @@
 
   const CHARSET = "+xo";
   const TICK_MS = 25;
-  const STEP_TICKS = 18; // roughly how many ticks a full grow/shrink/reveal takes, any length
+  const STEP_TICKS = 18; // roughly how many ticks a full grow/shrink/cross-scramble takes, any length
+  const PRESCRAMBLE_TICKS = 12; // ticks of pure randomization before a lock sweep starts resolving
 
   // Placeholder copy — swap for the real content when ready.
   const ABOUT_TEXT = `This is placeholder copy standing in for the real bio.
@@ -23,30 +24,26 @@ paragraphs before real work samples go in.`;
   const nameEl = document.querySelector(".name");
   const roleEl = document.querySelector(".role");
 
-  if (!identity || !nameEl || !roleEl) return;
+  const stage = document.getElementById("reveal-stage");
+  const stageLabel = document.getElementById("reveal-label");
+  const stageContent = document.getElementById("reveal-content");
+
+  if (!identity || !nameEl || !roleEl || !stage || !stageLabel || !stageContent) {
+    return;
+  }
 
   const sections = {
     about: {
       link: document.getElementById("about-link"),
-      stage: document.getElementById("about-stage"),
-      label: document.getElementById("about-label"),
-      content: document.getElementById("about-content"),
+      labelText: "// About",
       text: ABOUT_TEXT,
     },
     work: {
       link: document.getElementById("work-link"),
-      stage: document.getElementById("work-stage"),
-      label: document.getElementById("work-label"),
-      content: document.getElementById("work-content"),
+      labelText: "// Work",
       text: WORK_TEXT,
     },
   };
-
-  // Capture each label's original text once, up front — it gets scrambled
-  // away and regrown, so we can't rely on reading it back from the DOM later.
-  Object.values(sections).forEach((s) => {
-    if (s.label) s.labelText = s.label.textContent;
-  });
 
   let current = null; // null | "about" | "work"
   let busy = false;
@@ -74,7 +71,8 @@ paragraphs before real work samples go in.`;
 
   // Grows `target` onto el one chunk of characters at a time (each newly
   // appended character starts scrambled), then once full length is reached,
-  // sweeps a lock across it to resolve the scramble into the real text.
+  // sweeps a lock across it to resolve the scramble into the real text. Used
+  // only for the very first reveal, where el starts out empty.
   function growIn(el, target, done) {
     if (REDUCED) {
       el.textContent = target;
@@ -87,12 +85,21 @@ paragraphs before real work samples go in.`;
 
     function growStep() {
       if (len >= target.length) {
-        revealStep(0);
+        prescramble(PRESCRAMBLE_TICKS);
         return;
       }
       el.textContent = renderMasked(target, len, 0);
       len = Math.min(target.length, len + step);
       setTimeout(growStep, TICK_MS);
+    }
+
+    function prescramble(ticksLeft) {
+      if (ticksLeft <= 0) {
+        revealStep(0);
+        return;
+      }
+      el.textContent = renderMasked(target, target.length, 0);
+      setTimeout(() => prescramble(ticksLeft - 1), TICK_MS);
     }
 
     function revealStep(locked) {
@@ -109,7 +116,8 @@ paragraphs before real work samples go in.`;
   }
 
   // Shrinks el's current text away from the end, one chunk at a time, while
-  // what's left keeps scrambling, until nothing remains.
+  // what's left keeps scrambling, until nothing remains. Used only for the
+  // name/role, which have nowhere to resolve to once identity is gone.
   function shrinkOut(el, source, done) {
     if (REDUCED) {
       el.textContent = "";
@@ -134,14 +142,60 @@ paragraphs before real work samples go in.`;
     shrinkStep();
   }
 
+  // Scrambles el's current text directly into `target` — no clearing to
+  // empty first. Every position up to the longer of the two lengths cycles
+  // through random glyphs, then a lock sweeps left to right resolving each
+  // into target's character; any leftover tail (if the old text was longer)
+  // keeps scrambling until the final tick, when it's simply dropped.
+  function scrambleTo(el, target, done) {
+    if (REDUCED) {
+      el.textContent = target;
+      done();
+      return;
+    }
+
+    const current = el.textContent;
+    const maxLen = Math.max(current.length, target.length);
+    const step = stepSizeFor(maxLen);
+
+    function charAt(i) {
+      const ch = i < target.length ? target[i] : current[i];
+      return ch === " " || ch === "\n" ? ch : randChar();
+    }
+
+    function prescramble(ticksLeft) {
+      if (ticksLeft <= 0) {
+        lockStep(0);
+        return;
+      }
+      let text = "";
+      for (let i = 0; i < maxLen; i++) text += charAt(i);
+      el.textContent = text;
+      setTimeout(() => prescramble(ticksLeft - 1), TICK_MS);
+    }
+
+    function lockStep(locked) {
+      if (locked >= target.length) {
+        el.textContent = target;
+        done();
+        return;
+      }
+      let text = "";
+      for (let i = 0; i < maxLen; i++) {
+        text += i < locked ? target[i] : charAt(i);
+      }
+      el.textContent = text;
+      setTimeout(() => lockStep(locked + step), TICK_MS);
+    }
+
+    prescramble(PRESCRAMBLE_TICKS);
+  }
+
   // .identity is centered/anchored via a transform (translateX on desktop,
   // translateY on mobile), so as the name/role shrink and the block's size
   // changes, that transform would keep re-centering it — reading as a drift.
   // Freeze its current on-screen position (both axes, whichever transform was
-  // in play) once, and pin every section's stage to that same top/left so
-  // switching between About and Work — which have different line counts —
-  // never shifts position (previously each stage centered itself via its own
-  // height, so a taller/shorter block landed at a different top edge).
+  // in play) once, and pin the reveal stage to that same top/left.
   function freezePosition() {
     if (positionFrozen) return;
     positionFrozen = true;
@@ -149,34 +203,8 @@ paragraphs before real work samples go in.`;
     identity.style.left = `${rect.left}px`;
     identity.style.top = `${rect.top}px`;
     identity.style.transform = "none";
-    const stageTop = Math.max(24, rect.top - 40);
-    Object.values(sections).forEach((s) => {
-      s.stage.style.left = `${rect.left}px`;
-      s.stage.style.top = `${stageTop}px`;
-    });
-  }
-
-  function shrinkSection(section, done) {
-    let remaining = 2;
-    function next() {
-      if (--remaining > 0) return;
-      section.stage.classList.remove("visible");
-      section.stage.setAttribute("aria-hidden", "true");
-      done();
-    }
-    shrinkOut(section.label, section.labelText, next);
-    shrinkOut(section.content, section.content.textContent, next);
-  }
-
-  function growSection(section, done) {
-    section.stage.classList.add("visible");
-    section.stage.setAttribute("aria-hidden", "false");
-    let remaining = 2;
-    function next() {
-      if (--remaining === 0) done();
-    }
-    growIn(section.label, section.labelText, next);
-    growIn(section.content, section.text, next);
+    stage.style.left = `${rect.left}px`;
+    stage.style.top = `${Math.max(24, rect.top - 40)}px`;
   }
 
   // First-ever reveal: shrink the name/role away while growing `section` in
@@ -214,10 +242,21 @@ paragraphs before real work samples go in.`;
       taskDone();
     });
 
-    section.stage.classList.add("visible");
-    section.stage.setAttribute("aria-hidden", "false");
-    growIn(section.label, section.labelText, taskDone);
-    growIn(section.content, section.text, taskDone);
+    stage.classList.add("visible");
+    stage.setAttribute("aria-hidden", "false");
+    growIn(stageLabel, section.labelText, taskDone);
+    growIn(stageContent, section.text, taskDone);
+  }
+
+  // Already showing a section: scramble its label/content directly into the
+  // new one's, in place — no shrinking to empty and regrowing.
+  function crossScrambleTo(section, done) {
+    let remaining = 2;
+    function next() {
+      if (--remaining === 0) done();
+    }
+    scrambleTo(stageLabel, section.labelText, next);
+    scrambleTo(stageContent, section.text, next);
   }
 
   function enterSection(key) {
@@ -227,11 +266,8 @@ paragraphs before real work samples go in.`;
     if (current === null) {
       enterFromIdentity(sections[key]);
     } else {
-      const from = sections[current];
-      shrinkSection(from, () => {
-        growSection(sections[key], () => {
-          busy = false;
-        });
+      crossScrambleTo(sections[key], () => {
+        busy = false;
       });
     }
 
@@ -239,9 +275,7 @@ paragraphs before real work samples go in.`;
   }
 
   Object.entries(sections).forEach(([key, section]) => {
-    if (!section.link || !section.stage || !section.label || !section.content) {
-      return;
-    }
+    if (!section.link) return;
     section.link.addEventListener("click", (e) => {
       e.preventDefault();
       enterSection(key);
