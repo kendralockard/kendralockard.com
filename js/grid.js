@@ -127,13 +127,13 @@
     const vg = ctx.createRadialGradient(
       W / 2,
       H / 2,
-      H * 0.22,
+      H * 0.65,
       W / 2,
       H / 2,
-      H * 0.82,
+      H * 0.95,
     );
     vg.addColorStop(0, "rgba(3,7,17,0)");
-    vg.addColorStop(1, "rgba(3,7,17,0.65)");
+    vg.addColorStop(1, "rgba(3,7,17,0.45)");
     ctx.fillStyle = vg;
     ctx.fillRect(0, 0, W, H);
   }
