@@ -1,0 +1,175 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #030711;
+}
+
+#c {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  animation: fadeIn 1.2s ease 0.1s forwards;
+}
+
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 0, 0, 0.05) 3px,
+    rgba(0, 0, 0, 0.05) 4px
+  );
+}
+
+/* ── UI layer ─────────────────────────────────────────────────────────────── */
+
+.ui {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ── Nav ─────────────────────────────────────────────────────────────────── */
+
+.nav {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1.5rem 2.5rem;
+  pointer-events: auto;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: "Courier New", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(0, 229, 255, 0.35);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  color: rgba(0, 229, 255, 0.82);
+  outline: none;
+}
+
+/* ── Identity — centered in lower-left quadrant ───────────────────────────── */
+
+.identity {
+  position: absolute;
+  left: 25%;
+  bottom: 25%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  pointer-events: auto;
+}
+
+.name {
+  font-family: "Avenir", Helvetica, "Segoe UI", Arial, sans-serif;
+  font-weight: 300;
+  font-size: 2.8rem;
+  letter-spacing: 0.15em;
+  color: #e8f4ff;
+  white-space: nowrap;
+  padding-bottom: 0.2rem;
+}
+
+.role {
+  font-family: "Courier New", monospace;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: rgba(0, 229, 255, 0.45);
+  white-space: nowrap;
+}
+
+/* ── Status — bottom right ────────────────────────────────────────────────── */
+
+.status-group {
+  position: absolute;
+  bottom: 2rem;
+  right: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: rgba(0, 229, 255, 0.24);
+}
+
+.status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f0288a;
+  box-shadow:
+    0 0 6px #f0288a,
+    0 0 14px rgba(240, 40, 138, 0.3);
+  flex-shrink: 0;
+  animation: blink 3s ease-in-out infinite;
+}
+
+/* ── Keyframes ───────────────────────────────────────────────────────────── */
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #c {
+    animation: none;
+    opacity: 1;
+  }
+  .status-dot {
+    animation: none;
+  }
+}
