@@ -147,15 +147,18 @@
   }
 
   // ── Events ───────────────────────────────────────────────────────────────────
-  document.addEventListener("mousemove", (e) => {
-    rawMx = e.clientX;
-    rawMy = e.clientY;
-
-    const xv = (e.clientX / W - 0.5) * 10;
-    const yv = (e.clientY / H - 0.5) * 10;
+  function updateCoords(clientX, clientY) {
+    const xv = (clientX / W - 0.5) * 10;
+    const yv = (clientY / H - 0.5) * 10;
     const fmt = (v) => (v >= 0 ? "+" : "") + v.toFixed(3);
     const el = document.getElementById("coords");
     if (el) el.textContent = `X:${fmt(xv)} · Y:${fmt(yv)}`;
+  }
+
+  document.addEventListener("mousemove", (e) => {
+    rawMx = e.clientX;
+    rawMy = e.clientY;
+    updateCoords(e.clientX, e.clientY);
   });
 
   document.body.addEventListener("mouseenter", (e) => {
@@ -170,6 +173,41 @@
     // Keep rawMx/rawMy at last position — mFade handles the fade-out
     mouseIn = false;
   });
+
+  // Touch drag mirrors mouse hover — position, enter, and leave.
+  document.body.addEventListener(
+    "touchstart",
+    (e) => {
+      const t = e.touches[0];
+      if (!t) return;
+      mouseIn = true;
+      rawMx = t.clientX;
+      rawMy = t.clientY;
+      mx = rawMx;
+      my = rawMy;
+      updateCoords(t.clientX, t.clientY);
+    },
+    { passive: true },
+  );
+
+  document.body.addEventListener(
+    "touchmove",
+    (e) => {
+      const t = e.touches[0];
+      if (!t) return;
+      rawMx = t.clientX;
+      rawMy = t.clientY;
+      updateCoords(t.clientX, t.clientY);
+      e.preventDefault();
+    },
+    { passive: false },
+  );
+
+  function touchEnd() {
+    mouseIn = false;
+  }
+  document.body.addEventListener("touchend", touchEnd);
+  document.body.addEventListener("touchcancel", touchEnd);
 
   // ── Nav link / role scramble ──────────────────────────────────────────────
   function initScramble() {

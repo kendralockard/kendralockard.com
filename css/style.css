@@ -19,6 +19,8 @@ body {
   height: 100%;
   overflow: hidden;
   background: #030711;
+  touch-action: none;
+  overscroll-behavior: none;
 }
 
 #c {
@@ -28,6 +30,7 @@ body {
   height: 100%;
   opacity: 0;
   animation: fadeIn ease forwards;
+  touch-action: none;
 }
 
 .scanlines {
@@ -178,5 +181,58 @@ body {
   }
   .status-dot {
     animation: none;
+  }
+}
+
+/* ── Mobile / small viewports ─────────────────────────────────────────────── */
+
+@media (max-width: 720px) {
+  .nav {
+    padding: 1.1rem 1.25rem;
+  }
+
+  .nav-links {
+    gap: 1.25rem;
+  }
+
+  .nav-links a {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+  }
+
+  .identity {
+    left: 1.5rem;
+    right: 1.5rem;
+    bottom: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc(100% - 3rem);
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .name {
+    font-size: 2rem;
+    white-space: normal;
+    letter-spacing: 0.1em;
+  }
+
+  .role {
+    font-size: 0.8rem;
+    white-space: normal;
+  }
+
+  .status-group {
+    bottom: 1.25rem;
+    right: 1.25rem;
+    gap: 0.6rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+  }
+}
+
+@media (max-width: 400px) {
+  .name {
+    font-size: 1.6rem;
   }
 }
