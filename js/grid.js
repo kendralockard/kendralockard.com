@@ -239,6 +239,11 @@
       const parts = role.textContent.split(" · ");
       role.innerHTML = "";
       parts.forEach((part, i) => {
+        const PREFIX = "// ";
+        if (part.startsWith(PREFIX)) {
+          role.appendChild(document.createTextNode(PREFIX));
+          part = part.slice(PREFIX.length);
+        }
         const span = document.createElement("span");
         span.textContent = part;
         span.style.cursor = "default";

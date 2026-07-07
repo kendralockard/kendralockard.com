@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "Avex";
+  src: url("../fonts/avex.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 *,
 *::before,
 *::after {
@@ -65,11 +72,11 @@ body {
 }
 
 .nav-links a {
-  font-family: "Courier New", monospace;
-  font-size: 0.75rem;
+  font-family: "Avex", "Courier New", monospace;
+  font-size: 0.8rem;
   letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: rgba(0, 229, 255, 0.35);
+  /* text-transform: uppercase; */
+  color: rgba(0, 229, 255, 0.5);
   text-decoration: none;
   transition: color 0.2s;
 }
@@ -93,8 +100,8 @@ body {
 }
 
 .name {
-  font-family: "Avenir", Helvetica, "Segoe UI", Arial, sans-serif;
-  font-weight: 300;
+  font-family: "Avex", "Avenir", Helvetica, sans-serif;
+  font-weight: normal;
   font-size: 2.8rem;
   letter-spacing: 0.15em;
   color: #e8f4ff;
@@ -103,10 +110,10 @@ body {
 }
 
 .role {
-  font-family: "Courier New", monospace;
+  font-family: "Avex", "Courier New", monospace;
   font-size: 1rem;
   letter-spacing: 0.1em;
-  color: rgba(0, 229, 255, 0.45);
+  color: rgba(0, 229, 255, 0.82);
   white-space: nowrap;
 }
 
@@ -120,14 +127,14 @@ body {
   align-items: center;
   gap: 1rem;
   font-family: "Courier New", monospace;
-  font-size: 0.58rem;
+  font-size: 0.75rem;
   letter-spacing: 0.2em;
-  color: rgba(0, 229, 255, 0.24);
+  color: rgba(0, 229, 255, 0.38);
 }
 
 .status-dot {
-  width: 5px;
-  height: 5px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #f0288a;
   box-shadow:
