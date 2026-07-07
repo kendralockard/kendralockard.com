@@ -4,9 +4,9 @@
   const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const CHARSET = "+xo10";
-  const TICK_MS = 25;
+  const TICK_MS = 32;
   const STEP_TICKS = 18; // roughly how many ticks a full grow/shrink/cross-scramble takes, any length
-  const PRESCRAMBLE_TICKS = 12; // ticks of pure randomization before a lock sweep starts resolving
+  const PRESCRAMBLE_TICKS = 7; // ticks of pure randomization before a lock sweep starts resolving
 
   // Placeholder copy — swap for the real content when ready.
   const ABOUT_TEXT = `This is placeholder copy standing in for the real bio.
