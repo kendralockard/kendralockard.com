@@ -286,6 +286,10 @@
     document
       .querySelectorAll(".brand")
       .forEach((el) => attachScramble(el, TICK_MS, 3));
+
+    document
+      .querySelectorAll(".contact-form button")
+      .forEach((el) => attachScramble(el, TICK_MS, 3));
   }
 
   window.addEventListener("resize", resize);
