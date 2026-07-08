@@ -165,6 +165,27 @@ body {
   pointer-events: none;
 }
 
+.back-link {
+  font-family: "Avex", "Courier New", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  margin-top: 0.4rem;
+}
+
+.back-link a {
+  color: rgba(0, 229, 255, 0.5);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.35);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.back-link a:hover,
+.back-link a:focus-visible {
+  color: rgba(0, 229, 255, 0.82);
+  border-color: rgba(0, 229, 255, 0.6);
+  outline: none;
+}
+
 .reveal-stage {
   position: absolute;
   width: min(620px, calc(100% - 3rem));
