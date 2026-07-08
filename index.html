@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Kendra Lockard</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
     <canvas id="c"></canvas>
@@ -12,10 +12,11 @@
 
     <div class="ui">
       <header class="nav">
+        <a href="/" class="brand hidden" id="home-link">Kendra Lockard</a>
         <ul class="nav-links">
-          <li><a href="#work" id="work-link">Work</a></li>
-          <li><a href="#about" id="about-link">About</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="/work" id="work-link">Work</a></li>
+          <li><a href="/about" id="about-link">About</a></li>
+          <li><a href="/contact" id="contact-link">Contact</a></li>
         </ul>
       </header>
 
@@ -26,7 +27,56 @@
 
       <div class="reveal-stage" id="reveal-stage" aria-hidden="true">
         <p class="reveal-label" id="reveal-label"></p>
-        <div class="reveal-content" id="reveal-content"></div>
+        <div class="reveal-content" id="reveal-content">
+          <div class="reveal-panel" id="panel-about" data-label="// About">
+            <p>
+              Hi! My name is Kendra and I'm a full-stack software engineer based in Brooklyn, NY.
+              I specialize in designing software tools for the built environment and am particularly 
+              motivated by work that advances social and environmental responsibility. On the side, I
+              enjoy building websites for artists and small business owners.
+            </p>
+          </div>
+
+          <div class="reveal-panel" id="panel-work" data-label="// Work">
+            <ul class="work-list">
+              <li>
+                <a href="https://thalolabs.com" target="_blank" rel="noopener">Thalo Labs</a>
+                &middot; Senior Software Engineer
+              </li>
+              <li>
+                <a href="https://www.teecom.com" target="_blank" rel="noopener">TEECOM</a>
+                &middot; Senior Software Engineer
+              </li>
+              <li>
+                <a href="https://www.oberlin.edu" target="_blank" rel="noopener">Oberlin College</a>
+                &middot; Web Development Instructor
+              </li>
+              <li>Freelance &middot; Web Developer</li>
+            </ul>
+          </div>
+
+          <div class="reveal-panel" id="panel-contact" data-label="// Contact">
+            <form
+              name="contact"
+              method="POST"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              class="contact-form"
+            >
+              <input type="hidden" name="form-name" value="contact" />
+              <p class="hp-field">
+                <label>
+                  Don't fill this out if you're human:
+                  <input name="bot-field" tabindex="-1" autocomplete="off" />
+                </label>
+              </p>
+              <label>Name<input type="text" name="name" required /></label>
+              <label>Email<input type="email" name="email" required /></label>
+              <label>Message<textarea name="message" rows="5" required></textarea></label>
+              <button type="submit">Send</button>
+            </form>
+          </div>
+        </div>
       </div>
 
       <div class="status-group">
@@ -36,7 +86,7 @@
       </div>
     </div>
 
-    <script src="js/grid.js"></script>
-    <script src="js/about.js"></script>
+    <script src="/js/grid.js"></script>
+    <script src="/js/about.js"></script>
   </body>
 </html>

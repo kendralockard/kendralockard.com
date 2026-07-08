@@ -68,11 +68,36 @@ body {
 .nav {
   position: absolute;
   top: 0;
+  left: 0;
   right: 0;
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
   padding: 1.5rem 2.5rem;
   pointer-events: auto;
+}
+
+.brand {
+  font-family: "Satoshi", "Avenir", Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  color: #e8f4ff;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.brand:hover,
+.brand:focus-visible {
+  color: rgba(0, 229, 255, 0.82);
+  border-color: rgba(0, 229, 255, 0.5);
+  outline: none;
+}
+
+.brand.hidden {
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .nav-links {
@@ -168,7 +193,6 @@ body {
   line-height: 1.75;
   letter-spacing: 0.02em;
   color: #e8f4ff;
-  white-space: pre-wrap;
 }
 
 .reveal-content a {
@@ -183,6 +207,83 @@ body {
   color: rgba(0, 229, 255, 0.82);
   border-color: rgba(0, 229, 255, 0.6);
   outline: none;
+}
+
+.reveal-panel {
+  display: none;
+}
+
+.reveal-panel.active {
+  display: block;
+}
+
+.work-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.contact-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-family: "Avex", "Courier New", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: rgba(0, 229, 255, 0.6);
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+  font-family: "Satoshi", "Avenir", Helvetica, sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: black;
+  background: rgba(232, 244, 255, 0.9);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  border-radius: 2px;
+  padding: 0.6rem 0.7rem;
+  resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: rgba(0, 229, 255, 0.7);
+}
+
+.contact-form button {
+  align-self: flex-start;
+  font-family: "Avex", "Courier New", monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  color: #030711;
+  background: rgba(0, 229, 255, 0.82);
+  border: none;
+  border-radius: 2px;
+  padding: 0.65rem 1.4rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.contact-form button:hover {
+  background: #00e5ff;
+}
+
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 /* ── Status — bottom right ────────────────────────────────────────────────── */
@@ -263,6 +364,11 @@ body {
   .nav-links a {
     font-size: 0.65rem;
     letter-spacing: 0.2em;
+  }
+
+  .brand {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
   }
 
   .identity {

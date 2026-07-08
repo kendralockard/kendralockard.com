@@ -222,6 +222,12 @@
       ticksPerLock = TICKS_PER_LOCK,
     ) {
       const original = el.textContent;
+      // Split into words so multi-word text (e.g. "Kendra Lockard") locks
+      // each word in lockstep by character depth, rather than the whole
+      // string locking left-to-right (which would finish the first word
+      // long before the second one even starts).
+      const words = original.split(" ");
+      const maxLen = Math.max(...words.map((w) => w.length));
       let timer = null;
       let locked = 0;
       let tick = 0;
@@ -231,8 +237,18 @@
         return CHARSET[Math.floor(Math.random() * CHARSET.length)];
       }
 
+      function renderAt(depth) {
+        return words
+          .map((w) => {
+            let s = w.slice(0, depth);
+            for (let i = depth; i < w.length; i++) s += randChar();
+            return s;
+          })
+          .join(" ");
+      }
+
       function step() {
-        if (locked >= original.length) {
+        if (locked >= maxLen) {
           el.textContent = original;
           return;
         }
@@ -240,9 +256,7 @@
           el.textContent = original;
           return;
         }
-        let text = original.slice(0, locked);
-        for (let i = locked; i < original.length; i++) text += randChar();
-        el.textContent = text;
+        el.textContent = renderAt(locked);
         tick++;
         if (tick % ticksPerLock === 0) locked += dir;
         timer = setTimeout(step, tickMs);
@@ -260,7 +274,7 @@
         clearTimeout(timer);
         dir = -1;
         tick = 0;
-        if (locked >= original.length) locked = original.length - 1;
+        if (locked >= maxLen) locked = maxLen - 1;
         step();
       });
     }
@@ -268,6 +282,10 @@
     document
       .querySelectorAll(".nav-links a")
       .forEach((el) => attachScramble(el));
+
+    document
+      .querySelectorAll(".brand")
+      .forEach((el) => attachScramble(el, TICK_MS, 3));
   }
 
   window.addEventListener("resize", resize);

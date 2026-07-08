@@ -1,66 +1,47 @@
 (function () {
   "use strict";
 
-  const ABOUT_TEXT = `I'm a full-stack software engineer with a focus on backend systems and domain modeling. I specialize in designing software tools for the built environment and am motivated by work that advances social and environmental responsibility. On the side, I also enjoy building websites for artists and small business owners.`;
-
-  const WORK_ENTRIES = [
-    { name: "Thalo Labs", url: "https://thalolabs.com", role: "Senior Software Engineer" },
-    { name: "TEECOM", url: "https://www.teecom.com", role: "Senior Software Engineer" },
-    { name: "Oberlin College", url: "https://www.oberlin.edu", role: "Web Development Instructor" },
-    { name: "Freelance", url: null, role: "Web Developer" },
-  ];
-
-  const WORK_HTML = WORK_ENTRIES.map(({ name, url, role }) => {
-    const label = url
-      ? `<a href="${url}" target="_blank" rel="noopener">${name}</a>`
-      : name;
-    return `${label} · ${role}`;
-  }).join("\n");
-
   const identity = document.querySelector(".identity");
 
   const stage = document.getElementById("reveal-stage");
   const stageLabel = document.getElementById("reveal-label");
-  const stageContent = document.getElementById("reveal-content");
+  const homeLink = document.getElementById("home-link");
 
-  if (!identity || !stage || !stageLabel || !stageContent) {
+  if (!identity || !stage || !stageLabel || !homeLink) {
     return;
   }
+
+  const BASE_TITLE = "Kendra Lockard";
 
   const sections = {
     about: {
       link: document.getElementById("about-link"),
-      labelText: "// About",
-      text: ABOUT_TEXT,
+      panel: document.getElementById("panel-about"),
+      path: "/about",
     },
     work: {
       link: document.getElementById("work-link"),
-      labelText: "// Work",
-      text: WORK_HTML,
-      html: true,
+      panel: document.getElementById("panel-work"),
+      path: "/work",
+    },
+    contact: {
+      link: document.getElementById("contact-link"),
+      panel: document.getElementById("panel-contact"),
+      path: "/contact",
     },
   };
 
-  let current = null; // null | "about" | "work"
+  let current = null; // null | "about" | "work" | "contact"
   let positionFrozen = false;
 
-  // Measures how tall the stage would render with the given text, without
-  // ever showing it (visibility:hidden still lays out and can be measured).
+  // Measures how tall the stage would render with a given panel active,
+  // without ever showing it (visibility:hidden still lays out and can be
+  // measured).
   function measureStageHeight(section) {
-    stageLabel.textContent = section.labelText;
-    setContent(section);
+    section.panel.classList.add("active");
     const height = stage.offsetHeight;
-    stageLabel.textContent = "";
-    stageContent.textContent = "";
+    section.panel.classList.remove("active");
     return height;
-  }
-
-  function setContent(section) {
-    if (section.html) {
-      stageContent.innerHTML = section.text;
-    } else {
-      stageContent.textContent = section.text;
-    }
   }
 
   // .identity is centered/anchored via a transform (translateX on desktop,
@@ -68,8 +49,8 @@
   // place, that transform is no longer relevant. Freeze identity's current
   // on-screen position (both axes, whichever transform was in play) once. The
   // reveal stage gets a fixed top too — computed from a true vertical center
-  // rather than tied to identity — using the taller of About/Work's rendered
-  // heights, so both land at the exact same spot instead of each
+  // rather than tied to identity — using the taller of the sections' rendered
+  // heights, so all of them land at the exact same spot instead of each
   // self-centering around its own (different) height.
   function freezePosition() {
     if (positionFrozen) return;
@@ -86,9 +67,7 @@
     stage.style.top = `${Math.max(24, (window.innerHeight - maxHeight) / 2)}px`;
   }
 
-  function enterSection(key) {
-    if (current === key) return;
-
+  function showSection(key) {
     const section = sections[key];
 
     if (current === null) {
@@ -96,19 +75,71 @@
       identity.classList.add("hidden");
       stage.classList.add("visible");
       stage.setAttribute("aria-hidden", "false");
+      homeLink.classList.remove("hidden");
     }
 
-    stageLabel.textContent = section.labelText;
-    setContent(section);
+    Object.values(sections).forEach((s) => s.panel.classList.remove("active"));
+    section.panel.classList.add("active");
+    stageLabel.textContent = section.panel.dataset.label;
+    document.title = `${section.panel.dataset.label.replace("// ", "")} — ${BASE_TITLE}`;
 
     current = key;
+  }
+
+  function showHome() {
+    if (current === null) return;
+    identity.classList.remove("hidden");
+    stage.classList.remove("visible");
+    stage.setAttribute("aria-hidden", "true");
+    homeLink.classList.add("hidden");
+    Object.values(sections).forEach((s) => s.panel.classList.remove("active"));
+    stageLabel.textContent = "";
+    document.title = BASE_TITLE;
+    current = null;
+  }
+
+  function pathToKey(pathname) {
+    const path = pathname.replace(/\/$/, "") || "/";
+    const found = Object.entries(sections).find(([, s]) => s.path === path);
+    return found ? found[0] : null;
+  }
+
+  // Applies the section for `key` (or home when null). `push` controls
+  // whether this is a user-initiated navigation (adds a history entry) or a
+  // sync in response to one that already happened (initial load, popstate).
+  function navigate(key, push) {
+    if (key === current) return;
+    if (key) {
+      showSection(key);
+    } else {
+      showHome();
+    }
+    if (push) {
+      history.pushState(null, "", key ? sections[key].path : "/");
+    }
   }
 
   Object.entries(sections).forEach(([key, section]) => {
     if (!section.link) return;
     section.link.addEventListener("click", (e) => {
       e.preventDefault();
-      enterSection(key);
+      navigate(key, true);
     });
   });
+
+  homeLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    navigate(null, true);
+  });
+
+  window.addEventListener("popstate", () => {
+    navigate(pathToKey(location.pathname), false);
+  });
+
+  // Loaded directly at /about, /work, or /contact — open that section
+  // immediately instead of showing the identity view first.
+  const initialKey = pathToKey(location.pathname);
+  if (initialKey) {
+    navigate(initialKey, false);
+  }
 })();
