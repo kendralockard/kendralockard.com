@@ -155,6 +155,24 @@ body {
   white-space: nowrap;
 }
 
+.thanks {
+  font-family: "Satoshi", "Avenir", Helvetica, sans-serif;
+  font-weight: normal;
+  font-size: 2.8rem;
+  letter-spacing: 0.15em;
+  color: #e8f4ff;
+  white-space: nowrap;
+  padding-bottom: 0.2rem;
+}
+
+.thanks-subhead {
+  font-family: "Avex", "Courier New", monospace;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: rgba(0, 229, 255, 0.82);
+  white-space: nowrap;
+}
+
 /* ── Reveal stage — sits directly on the background, no panel chrome ───────
    Shared by any nav section (About, Work, ...) that replaces the identity
    block. `left` is set at runtime by about.js to match identity's own left
