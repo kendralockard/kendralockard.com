@@ -5,6 +5,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Satoshi";
+  src: url("../fonts/satoshi.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 *,
 *::before,
 *::after {
@@ -106,7 +113,7 @@ body {
 }
 
 .name {
-  font-family: "Avex", "Avenir", Helvetica, sans-serif;
+  font-family: "Satoshi", "Avenir", Helvetica, sans-serif;
   font-weight: normal;
   font-size: 2.8rem;
   letter-spacing: 0.15em;
@@ -125,9 +132,8 @@ body {
 
 /* ── Reveal stage — sits directly on the background, no panel chrome ───────
    Shared by any nav section (About, Work, ...) that replaces the identity
-   block via the shrink/grow scramble transition. `left` is set at runtime by
-   about.js to match identity's own left edge, so revealed text lines up with
-   where the name/role used to be. */
+   block. `left` is set at runtime by about.js to match identity's own left
+   edge, so revealed text lines up with where the name/role used to be. */
 
 .identity.hidden {
   visibility: hidden;
@@ -151,18 +157,32 @@ body {
 
 .reveal-label {
   font-family: "Avex", "Courier New", monospace;
-  font-size: 0.8rem;
+  font-size: 1rem;
   letter-spacing: 0.2em;
   color: rgba(0, 229, 255, 0.5);
 }
 
 .reveal-content {
-  font-family: "Avex", "Courier New", monospace;
-  font-size: 1rem;
+  font-family: "Satoshi", "Avenir", Helvetica, sans-serif;
+  font-size: 1.2rem;
   line-height: 1.75;
   letter-spacing: 0.02em;
   color: #e8f4ff;
   white-space: pre-wrap;
+}
+
+.reveal-content a {
+  color: rgba(0, 229, 255, 0.5);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.35);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.reveal-content a:hover,
+.reveal-content a:focus-visible {
+  color: rgba(0, 229, 255, 0.82);
+  border-color: rgba(0, 229, 255, 0.6);
+  outline: none;
 }
 
 /* ── Status — bottom right ────────────────────────────────────────────────── */

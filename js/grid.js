@@ -209,7 +209,7 @@
   document.body.addEventListener("touchend", touchEnd);
   document.body.addEventListener("touchcancel", touchEnd);
 
-  // ── Nav link / role scramble ──────────────────────────────────────────────
+  // ── Nav link scramble ────────────────────────────────────────────────────
   function initScramble() {
     if (REDUCED) return;
     const CHARSET = "+xo";
@@ -268,30 +268,6 @@
     document
       .querySelectorAll(".nav-links a")
       .forEach((el) => attachScramble(el));
-
-    const name = document.querySelector(".name");
-    if (name) name.style.cursor = "default";
-
-    const role = document.querySelector(".role");
-    if (role) {
-      const parts = role.textContent.split(" · ");
-      role.innerHTML = "";
-      parts.forEach((part, i) => {
-        const PREFIX = "// ";
-        if (part.startsWith(PREFIX)) {
-          role.appendChild(document.createTextNode(PREFIX));
-          part = part.slice(PREFIX.length);
-        }
-        const span = document.createElement("span");
-        span.textContent = part;
-        span.style.cursor = "default";
-        attachScramble(span, 45, 1);
-        role.appendChild(span);
-        if (i < parts.length - 1) {
-          role.appendChild(document.createTextNode(" · "));
-        }
-      });
-    }
   }
 
   window.addEventListener("resize", resize);
