@@ -222,6 +222,9 @@
       ticksPerLock = TICKS_PER_LOCK,
     ) {
       const original = el.textContent;
+      // Keep a stable text node so mousedown/mouseup always target the same
+      // DOM node — replacing it via textContent loses the click mid-scramble.
+      const textNode = el.firstChild || el.appendChild(document.createTextNode(original));
       // Split into words so multi-word text (e.g. "Kendra Lockard") locks
       // each word in lockstep by character depth, rather than the whole
       // string locking left-to-right (which would finish the first word
@@ -249,14 +252,14 @@
 
       function step() {
         if (locked >= maxLen) {
-          el.textContent = original;
+          textNode.nodeValue = original;
           return;
         }
         if (locked < 0) {
-          el.textContent = original;
+          textNode.nodeValue = original;
           return;
         }
-        el.textContent = renderAt(locked);
+        textNode.nodeValue = renderAt(locked);
         tick++;
         if (tick % ticksPerLock === 0) locked += dir;
         timer = setTimeout(step, tickMs);
@@ -277,6 +280,7 @@
         if (locked >= maxLen) locked = maxLen - 1;
         step();
       });
+
     }
 
     document
