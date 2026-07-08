@@ -84,14 +84,12 @@ body {
   letter-spacing: 0.08em;
   color: #e8f4ff;
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.2s;
 }
 
 .brand:hover,
 .brand:focus-visible {
   color: rgba(0, 229, 255, 0.82);
-  border-color: rgba(0, 229, 255, 0.5);
   outline: none;
 }
 
