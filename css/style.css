@@ -409,8 +409,19 @@ body {
     letter-spacing: 0.1em;
   }
 
+  .thanks {
+    font-size: 1rem;
+    white-space: normal;
+    letter-spacing: 0.1em;
+  }
+
   .role {
     font-size: 0.8rem;
+    white-space: normal;
+  }
+
+  .thanks-subhead {
+    font-size: 0.6rem;
     white-space: normal;
   }
 
