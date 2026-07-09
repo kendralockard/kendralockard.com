@@ -14,11 +14,6 @@
   const BASE_TITLE = "Kendra Lockard";
 
   const sections = {
-    about: {
-      link: document.getElementById("about-link"),
-      panel: document.getElementById("panel-about"),
-      path: "/about",
-    },
     work: {
       link: document.getElementById("work-link"),
       panel: document.getElementById("panel-work"),
@@ -80,7 +75,6 @@
 
     Object.values(sections).forEach((s) => s.panel.classList.remove("active"));
     section.panel.classList.add("active");
-    stageLabel.textContent = section.panel.dataset.label;
     document.title = `${section.panel.dataset.label.replace("// ", "")} — ${BASE_TITLE}`;
 
     current = key;

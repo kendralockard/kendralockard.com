@@ -15,7 +15,6 @@
         <a href="/" class="brand hidden" id="home-link">Kendra Lockard</a>
         <ul class="nav-links">
           <li><a href="/work" id="work-link">Work</a></li>
-          <li><a href="/about" id="about-link">About</a></li>
           <li><a href="/contact" id="contact-link">Contact</a></li>
         </ul>
       </header>
@@ -28,27 +27,25 @@
       <div class="reveal-stage" id="reveal-stage" aria-hidden="true">
         <p class="reveal-label" id="reveal-label"></p>
         <div class="reveal-content" id="reveal-content">
-          <div class="reveal-panel" id="panel-about" data-label="// About">
-            <p>
-              Hi! My name is Kendra and I'm a full-stack software engineer based in Brooklyn, NY.
-              I specialize in designing software tools for the built environment and am particularly 
-              motivated by work that advances social and environmental responsibility. On the side, I
-              enjoy building websites for artists and small business owners.
-            </p>
-          </div>
-
           <div class="reveal-panel" id="panel-work" data-label="// Work">
+            <p class="reveal-label">// Work</p>
             <ul class="work-list">
               <li>
-                <a href="https://thalolabs.com" target="_blank" rel="noopener">Thalo Labs</a>
+                <a href="https://thalolabs.com" target="_blank" rel="noopener"
+                  >Thalo Labs</a
+                >
                 &middot; Senior Software Engineer
               </li>
               <li>
-                <a href="https://www.teecom.com" target="_blank" rel="noopener">TEECOM</a>
+                <a href="https://www.teecom.com" target="_blank" rel="noopener"
+                  >TEECOM</a
+                >
                 &middot; Senior Software Engineer
               </li>
               <li>
-                <a href="https://www.oberlin.edu" target="_blank" rel="noopener">Oberlin College</a>
+                <a href="https://www.oberlin.edu" target="_blank" rel="noopener"
+                  >Oberlin College</a
+                >
                 &middot; Web Development Instructor
               </li>
               <li>Freelance &middot; Web Developer</li>
@@ -56,6 +53,7 @@
           </div>
 
           <div class="reveal-panel" id="panel-contact" data-label="// Contact">
+            <p class="reveal-label">// Contact</p>
             <form
               name="contact"
               method="POST"
@@ -73,7 +71,9 @@
               </p>
               <label>Name<input type="text" name="name" required /></label>
               <label>Email<input type="email" name="email" required /></label>
-              <label>Message<textarea name="message" rows="5" required></textarea></label>
+              <label
+                >Message<textarea name="message" rows="5" required></textarea>
+              </label>
               <button type="submit">Send</button>
             </form>
           </div>
