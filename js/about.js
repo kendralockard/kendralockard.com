@@ -19,6 +19,11 @@
       panel: document.getElementById("panel-work"),
       path: "/work",
     },
+    projects: {
+      link: document.getElementById("projects-link"),
+      panel: document.getElementById("panel-projects"),
+      path: "/projects",
+    },
     contact: {
       link: document.getElementById("contact-link"),
       panel: document.getElementById("panel-contact"),
@@ -26,7 +31,7 @@
     },
   };
 
-  let current = null; // null | "about" | "work" | "contact"
+  let current = null; // null | "work" | "projects" | "contact"
   let positionFrozen = false;
 
   // Measures how tall the stage would render with a given panel active,

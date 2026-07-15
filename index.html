@@ -15,6 +15,7 @@
         <a href="/" class="brand hidden" id="home-link">Kendra Lockard</a>
         <ul class="nav-links">
           <li><a href="/work" id="work-link">Work</a></li>
+          <li><a href="/projects" id="projects-link">Projects</a></li>
           <li><a href="/contact" id="contact-link">Contact</a></li>
         </ul>
       </header>
@@ -50,6 +51,91 @@
               </li>
               <li>Freelance &middot; Web Developer</li>
             </ul>
+
+            <div class="panel-subsection">
+              <p class="reveal-label">// Writings</p>
+              <ul class="work-list">
+                <li>
+                  <a
+                    href="https://www.buildingsascode.com/p/buildings-as-code-in-every-phase"
+                    target="_blank"
+                    rel="noopener"
+                    >Buildings as Code in Every Phase</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="reveal-panel" id="panel-projects" data-label="// Projects">
+            <div class="site-carousel" id="site-carousel">
+              <div class="site-slides">
+                <div class="site-card active">
+                  <div class="site-frame">
+                    <iframe
+                      src="https://walkwithavalon.com"
+                      title="Walk with Avalon"
+                      loading="lazy"
+                    ></iframe>
+                  </div>
+                  <a
+                    class="site-name"
+                    href="https://walkwithavalon.com"
+                    target="_blank"
+                    rel="noopener"
+                    >Walk with Avalon &#8599;</a
+                  >
+                </div>
+                <div class="site-card">
+                  <div class="site-frame">
+                    <iframe
+                      src="https://noahwoodfragrances.netlify.app"
+                      title="Noah Wood Fragrances"
+                      loading="lazy"
+                    ></iframe>
+                  </div>
+                  <a
+                    class="site-name"
+                    href="https://noahwoodfragrances.netlify.app"
+                    target="_blank"
+                    rel="noopener"
+                    >Noah Wood Fragrances &#8599;</a
+                  >
+                </div>
+              </div>
+              <div class="site-carousel-controls">
+                <button
+                  type="button"
+                  class="site-carousel-btn"
+                  id="site-prev"
+                  aria-label="Previous site"
+                >
+                  &#8592;
+                </button>
+                <div class="site-carousel-dots">
+                  <button
+                    type="button"
+                    class="site-dot active"
+                    data-index="0"
+                    aria-label="Show Walk with Avalon"
+                  ></button>
+                  <button
+                    type="button"
+                    class="site-dot"
+                    data-index="1"
+                    aria-label="Show Noah Wood Fragrances"
+                  ></button>
+                </div>
+                <button
+                  type="button"
+                  class="site-carousel-btn"
+                  id="site-next"
+                  aria-label="Next site"
+                >
+                  &#8594;
+                </button>
+              </div>
+            </div>
           </div>
 
           <div class="reveal-panel" id="panel-contact" data-label="// Contact">
@@ -89,5 +175,6 @@
 
     <script src="/js/grid.js"></script>
     <script src="/js/about.js"></script>
+    <script src="/js/carousel.js"></script>
   </body>
 </html>

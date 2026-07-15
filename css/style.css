@@ -232,6 +232,10 @@ body {
   line-height: 1.75;
   letter-spacing: 0.02em;
   color: #e8f4ff;
+  max-height: calc(100vh - 12rem);
+  overflow-y: auto;
+  touch-action: pan-y;
+  overscroll-behavior: contain;
 }
 
 .reveal-content a {
@@ -263,6 +267,168 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+}
+
+.panel-subsection {
+  margin-top: 1.75rem;
+}
+
+.panel-subsection:first-child {
+  margin-top: 0;
+}
+
+.panel-subsection .reveal-label {
+  margin-bottom: 0.6rem;
+}
+
+#panel-projects.active {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6.5rem 3rem 4rem;
+  pointer-events: none;
+}
+
+.site-carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  width: 100%;
+  max-width: 1400px;
+  height: 100%;
+  pointer-events: auto;
+}
+
+.site-slides {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.site-card {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  opacity: 0;
+  transform: translateX(16px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+  pointer-events: none;
+}
+
+.site-card.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.site-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  transition: border-color 0.2s;
+}
+
+.site-card:hover .site-frame,
+.site-card:focus-within .site-frame {
+  border-color: rgba(0, 229, 255, 0.6);
+}
+
+.site-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.site-name {
+  align-self: flex-start;
+  font-family: "Avex", "Courier New", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: rgba(0, 229, 255, 0.5);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 229, 255, 0.35);
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.site-name:hover,
+.site-name:focus-visible {
+  color: rgba(0, 229, 255, 0.82);
+  border-color: rgba(0, 229, 255, 0.6);
+  outline: none;
+}
+
+.site-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.site-carousel-btn {
+  font-family: "Avex", "Courier New", monospace;
+  font-size: 0.9rem;
+  color: rgba(0, 229, 255, 0.5);
+  background: transparent;
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  border-radius: 2px;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.site-carousel-btn:hover,
+.site-carousel-btn:focus-visible {
+  color: rgba(0, 229, 255, 0.82);
+  border-color: rgba(0, 229, 255, 0.6);
+  outline: none;
+}
+
+.site-carousel-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.site-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 229, 255, 0.25);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+}
+
+.site-dot:hover,
+.site-dot:focus-visible {
+  background: rgba(0, 229, 255, 0.6);
+  outline: none;
+}
+
+.site-dot.active {
+  background: rgba(0, 229, 255, 0.82);
 }
 
 .contact-bio {
@@ -467,6 +633,11 @@ body {
 
   .reveal-content {
     font-size: 0.85rem;
+    max-height: calc(100vh - 8rem);
+  }
+
+  #panel-projects.active {
+    padding: 5rem 1.25rem 2rem;
   }
 
   .status-group {
