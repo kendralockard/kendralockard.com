@@ -26,8 +26,6 @@ body {
   height: 100%;
   overflow: hidden;
   background: #030711;
-  touch-action: none;
-  overscroll-behavior: none;
 }
 
 #c {
@@ -72,7 +70,6 @@ body {
   right: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 1.5rem 2.5rem;
   pointer-events: auto;
 }
@@ -97,6 +94,7 @@ body {
   display: flex;
   gap: 2.5rem;
   list-style: none;
+  margin-left: auto;
 }
 
 .nav-links a {
@@ -267,13 +265,12 @@ body {
 }
 
 #panel-projects.active {
-  position: fixed;
+  position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 6.5rem 3rem 4rem;
-  pointer-events: none;
 }
 
 .site-carousel {
@@ -305,12 +302,19 @@ body {
     opacity 0.4s ease,
     transform 0.4s ease;
   pointer-events: none;
+  z-index: 0;
 }
 
+/* Without an explicit stacking order, a later (inactive) sibling paints
+   over an earlier (active) one — Safari has been seen to block wheel
+   input from reaching an embedded iframe when any sibling, even an
+   invisible pointer-events:none one, is stacked on top of it. Force the
+   active card above every inactive one regardless of DOM order. */
 .site-card.active {
   opacity: 1;
   transform: translateX(0);
   pointer-events: auto;
+  z-index: 1;
 }
 
 .site-frame {
@@ -319,7 +323,6 @@ body {
   width: 100%;
   flex: 1;
   min-height: 0;
-  overflow: hidden;
   background: #000;
   border: 1px solid rgba(0, 229, 255, 0.25);
   transition: border-color 0.2s;
@@ -578,6 +581,54 @@ body.theme-light {
 
 .theme-light .site-dot.active {
   background: #004854;
+}
+
+.theme-light .reveal-label {
+  color: rgba(0, 72, 84, 0.85);
+}
+
+.theme-light .reveal-content {
+  color: #030711;
+}
+
+.theme-light .reveal-content a {
+  color: rgba(0, 72, 84, 0.85);
+  border-bottom-color: rgba(0, 72, 84, 0.5);
+}
+
+.theme-light .reveal-content a:hover,
+.theme-light .reveal-content a:focus-visible {
+  color: #004854;
+  border-color: rgba(0, 72, 84, 0.85);
+}
+
+.theme-light .contact-form {
+  background: #ffffff;
+}
+
+.theme-light .contact-form label {
+  color: rgba(0, 72, 84, 0.75);
+}
+
+.theme-light .contact-form input[type="text"],
+.theme-light .contact-form input[type="email"],
+.theme-light .contact-form textarea {
+  color: #030711;
+  border-bottom-color: rgba(0, 72, 84, 0.4);
+}
+
+.theme-light .contact-form input:focus,
+.theme-light .contact-form textarea:focus {
+  border-bottom-color: rgba(0, 72, 84, 0.85);
+}
+
+.theme-light .contact-form button {
+  color: #f4f1ec;
+  background: #004854;
+}
+
+.theme-light .contact-form button:hover {
+  background: #00636f;
 }
 
 /* ── Keyframes ───────────────────────────────────────────────────────────── */
