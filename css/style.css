@@ -189,13 +189,12 @@ body {
   outline: none;
 }
 
-/* ── Static page stage — Work/Contact standalone pages. Same centered
-   position as .identity, fixed via CSS since there's no identity block on
-   these pages to measure against. */
+/* ── Static page stage — Work/Contact standalone pages. Centered in the
+   viewport via fixed positioning. */
 
 .page-stage {
   position: fixed;
-  left: 30%;
+  left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   width: min(620px, calc(100% - 3rem));
@@ -509,9 +508,11 @@ body {
   animation: blink 3s ease-in-out infinite;
 }
 
-/* ── Light theme — off-white background, dark-teal accent in place of the
-   cyan-on-dark palette. Opacities match the dark theme's so hover/active
-   states read the same way. Applied via a `theme-light` class on <body>. */
+/* ── Light theme — off-white background, deep-teal accent in place of the
+   cyan-on-dark palette. Text sits at higher opacity than the dark theme's
+   equivalents since a dark, translucent color reads much lower-contrast
+   against a light background than a light, translucent one does against a
+   dark background. Applied via a `theme-light` class on <body>. */
 
 body.theme-light {
   background: #f4f1ec;
@@ -523,64 +524,60 @@ body.theme-light {
 
 .theme-light .brand:hover,
 .theme-light .brand:focus-visible {
-  color: rgba(0, 106, 120, 0.82);
+  color: #004854;
 }
 
 .theme-light .nav-links a {
-  color: rgba(0, 106, 120, 0.5);
+  color: rgba(0, 72, 84, 0.85);
 }
 
 .theme-light .nav-links a:hover,
 .theme-light .nav-links a:focus-visible {
-  color: rgba(0, 106, 120, 0.82);
+  color: #004854;
 }
 
 .theme-light .site-frame {
-  border-color: rgba(0, 106, 120, 0.25);
+  border-color: rgba(0, 72, 84, 0.4);
 }
 
 .theme-light .site-card:hover .site-frame,
 .theme-light .site-card:focus-within .site-frame {
-  border-color: rgba(0, 106, 120, 0.6);
+  border-color: rgba(0, 72, 84, 0.75);
 }
 
 .theme-light .site-name {
-  color: rgba(0, 106, 120, 0.5);
-  border-bottom-color: rgba(0, 106, 120, 0.35);
+  color: rgba(0, 72, 84, 0.85);
+  border-bottom-color: rgba(0, 72, 84, 0.5);
 }
 
 .theme-light .site-name:hover,
 .theme-light .site-name:focus-visible {
-  color: rgba(0, 106, 120, 0.82);
-  border-color: rgba(0, 106, 120, 0.6);
+  color: #004854;
+  border-color: rgba(0, 72, 84, 0.85);
 }
 
 .theme-light .site-carousel-btn {
-  color: rgba(0, 106, 120, 0.5);
-  border-color: rgba(0, 106, 120, 0.3);
+  color: rgba(0, 72, 84, 0.85);
+  border-color: rgba(0, 72, 84, 0.45);
 }
 
 .theme-light .site-carousel-btn:hover,
 .theme-light .site-carousel-btn:focus-visible {
-  color: rgba(0, 106, 120, 0.82);
-  border-color: rgba(0, 106, 120, 0.6);
+  color: #004854;
+  border-color: rgba(0, 72, 84, 0.85);
 }
 
 .theme-light .site-dot {
-  background: rgba(0, 106, 120, 0.25);
+  background: rgba(0, 72, 84, 0.4);
 }
 
 .theme-light .site-dot:hover,
 .theme-light .site-dot:focus-visible {
-  background: rgba(0, 106, 120, 0.6);
+  background: rgba(0, 72, 84, 0.75);
 }
 
 .theme-light .site-dot.active {
-  background: rgba(0, 106, 120, 0.82);
-}
-
-.theme-light .status-group {
-  color: rgba(0, 106, 120, 0.4);
+  background: #004854;
 }
 
 /* ── Keyframes ───────────────────────────────────────────────────────────── */
