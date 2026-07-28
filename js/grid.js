@@ -10,10 +10,10 @@
   const RADIUS = 200; // radius of mouse influence
   const MAX_DISP = 70; // max push distance
   const SEG = 10; // px between curve sample points — every pixel sampled
-  const BASE_A = 0.28; // base line opacity
+  const BASE_A = 0.45; // base line opacity — higher than a dark theme would
+  // need, since a dark, translucent line reads lower-contrast against a
+  // light background than a light, translucent one does against a dark one
   const MAX_PAN = 0; // max grid pan offset in px
-  const MAX_TILT = 0.22; // max tilt angle in radians (~12.5°)
-  const PERSP_D = 900; // perspective distance — larger = flatter
 
   // ── State ───────────────────────────────────────────────────────────────────
   const LAG = 0.04; // lerp factor — lower = more trail, higher = snappier
@@ -25,7 +25,6 @@
     my = -9999; // lagged position used for distortion
   let panX = 0,
     panY = 0; // lagged pan offset
-  let tilt = 0; // lagged tilt angle for perspective y-rotation
   let mouseIn = false;
   let mFade = 0;
   let lastTs = null;
@@ -33,6 +32,44 @@
   function resize() {
     W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
+  }
+
+  // ── Snap the identity panel to the grid ──────────────────────────────────
+  // Grid lines sit at multiples of CELL from the viewport origin. Size the
+  // panel up to a whole multiple of CELL and nudge its position so all four
+  // edges land on real grid lines, instead of floating between them.
+  const IDENTITY_PAD_X = 32; // 2rem @ 16px root
+  const IDENTITY_PAD_Y = 24; // 1.5rem @ 16px root
+
+  function alignIdentityToGrid() {
+    const el = document.querySelector(".identity");
+    if (!el || !document.body.classList.contains("theme-light")) return;
+    // Below this, .identity switches to an explicit CSS width (see the
+    // mobile media query) that this padding-based sizing would fight with,
+    // since box-sizing:border-box makes padding eat into that fixed width
+    // instead of growing the box.
+    if (window.innerWidth <= 720) {
+      el.style.margin = "";
+      el.style.padding = "";
+      return;
+    }
+
+    el.style.margin = "0";
+    el.style.padding = `${IDENTITY_PAD_Y}px ${IDENTITY_PAD_X}px`;
+
+    const natural = el.getBoundingClientRect();
+    const width = Math.ceil(natural.width / CELL) * CELL;
+    const height = Math.ceil(natural.height / CELL) * CELL;
+    const extraX = (width - natural.width) / 2;
+    const extraY = (height - natural.height) / 2;
+    el.style.paddingLeft = `${IDENTITY_PAD_X + extraX}px`;
+    el.style.paddingRight = `${IDENTITY_PAD_X + extraX}px`;
+    el.style.paddingTop = `${IDENTITY_PAD_Y + extraY}px`;
+    el.style.paddingBottom = `${IDENTITY_PAD_Y + extraY}px`;
+
+    const sized = el.getBoundingClientRect();
+    el.style.marginLeft = `${Math.round(sized.left / CELL) * CELL - sized.left}px`;
+    el.style.marginTop = `${Math.round(sized.top / CELL) * CELL - sized.top}px`;
   }
 
   // ── Radial push displacement ─────────────────────────────────────────────────
@@ -76,11 +113,9 @@
       my += (rawMy - my) * LAG;
       panX += ((rawMx / W - 0.5) * MAX_PAN * 2 - panX) * 0.012;
       panY += ((rawMy / H - 0.5) * MAX_PAN * 2 - panY) * 0.012;
-      tilt += ((rawMy / H - 0.5) * MAX_TILT * 2 - tilt) * 0.012;
     } else {
       panX += (0 - panX) * 0.012;
       panY += (0 - panY) * 0.012;
-      tilt += (0 - tilt) * 0.012;
     }
 
     const target = mouseIn && !REDUCED ? 1 : 0;
@@ -89,18 +124,11 @@
     const margin = CELL * 2; // draw beyond edges so distortion never shows a gap
 
     // — flat grid lines ————————————————————————————————————————————————————————
-    const sinT = Math.sin(tilt);
-    const cosT = Math.cos(tilt);
-    const cx = W / 2 + panX;
-    const cy = H / 2 + panY;
-
     function project(x, y) {
-      const relY = y - H / 2;
-      const sc = PERSP_D / (PERSP_D + relY * sinT);
-      return [cx + (x - W / 2) * sc, cy + relY * cosT * sc];
+      return [x + panX, y + panY];
     }
 
-    ctx.strokeStyle = `rgba(0,229,255,${BASE_A})`;
+    ctx.strokeStyle = `rgba(0,72,84,${BASE_A})`;
     ctx.lineWidth = 0.9;
 
     // horizontal lines
@@ -132,8 +160,8 @@
       H / 2,
       H * 0.95,
     );
-    vg.addColorStop(0, "rgba(3,7,17,0)");
-    vg.addColorStop(1, "rgba(3,7,17,0.45)");
+    vg.addColorStop(0, "rgba(244,241,236,0)");
+    vg.addColorStop(1, "rgba(244,241,236,0.45)");
     ctx.fillStyle = vg;
     ctx.fillRect(0, 0, W, H);
   }
@@ -198,7 +226,13 @@
   document.body.addEventListener("touchend", touchEnd);
   document.body.addEventListener("touchcancel", touchEnd);
 
-  window.addEventListener("resize", resize);
+  window.addEventListener("resize", () => {
+    resize();
+    alignIdentityToGrid();
+  });
   resize();
+  alignIdentityToGrid();
+  // Custom fonts can change the text's natural size after first paint.
+  if (document.fonts) document.fonts.ready.then(alignIdentityToGrid);
   requestAnimationFrame(frame);
 })();

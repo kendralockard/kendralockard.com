@@ -3,29 +3,6 @@
 
   const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // ── Coordinate readout — shared by every page with a #coords element ──────
-  function updateCoords(clientX, clientY) {
-    const xv = (clientX / window.innerWidth - 0.5) * 10;
-    const yv = (clientY / window.innerHeight - 0.5) * 10;
-    const fmt = (v) => (v >= 0 ? "+" : "") + v.toFixed(3);
-    const el = document.getElementById("coords");
-    if (el) el.textContent = `X:${fmt(xv)} · Y:${fmt(yv)}`;
-  }
-
-  document.addEventListener("mousemove", (e) => {
-    updateCoords(e.clientX, e.clientY);
-  });
-
-  document.body.addEventListener(
-    "touchmove",
-    (e) => {
-      const t = e.touches[0];
-      if (!t) return;
-      updateCoords(t.clientX, t.clientY);
-    },
-    { passive: true },
-  );
-
   // ── Nav link scramble ────────────────────────────────────────────────────
   function initScramble() {
     if (REDUCED) return;

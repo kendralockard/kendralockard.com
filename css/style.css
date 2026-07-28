@@ -202,6 +202,10 @@ body {
   pointer-events: auto;
 }
 
+.page-stage--work {
+  top: 42%;
+}
+
 .reveal-label {
   font-family: "Avex", "Courier New", monospace;
   font-size: 1rem;
@@ -253,11 +257,15 @@ body {
 }
 
 .panel-subsection {
-  margin-top: 1.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 229, 255, 0.2);
 }
 
 .panel-subsection:first-child {
   margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
 .panel-subsection .reveal-label {
@@ -484,33 +492,6 @@ body {
   overflow: hidden;
 }
 
-/* ── Status — bottom right ────────────────────────────────────────────────── */
-
-.status-group {
-  position: absolute;
-  bottom: 2rem;
-  right: 2.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-family: "Courier New", monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  color: rgba(0, 229, 255, 0.38);
-}
-
-.status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #f0288a;
-  box-shadow:
-    0 0 6px #f0288a,
-    0 0 14px rgba(240, 40, 138, 0.3);
-  flex-shrink: 0;
-  animation: blink 3s ease-in-out infinite;
-}
-
 /* ── Light theme — off-white background, deep-teal accent in place of the
    cyan-on-dark palette. Text sits at higher opacity than the dark theme's
    equivalents since a dark, translucent color reads much lower-contrast
@@ -602,6 +583,10 @@ body.theme-light {
   border-color: rgba(0, 72, 84, 0.85);
 }
 
+.theme-light .panel-subsection {
+  border-top-color: rgba(0, 72, 84, 0.2);
+}
+
 .theme-light .contact-form {
   background: #ffffff;
 }
@@ -631,6 +616,23 @@ body.theme-light {
   background: #00636f;
 }
 
+.theme-light .name {
+  color: #030711;
+}
+
+.theme-light .role {
+  color: rgba(0, 72, 84, 0.85);
+}
+
+.theme-light .identity {
+  padding: 1.5rem 2rem;
+  background: rgba(244, 241, 236, 0.9);
+  border-radius: 2px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 /* ── Keyframes ───────────────────────────────────────────────────────────── */
 
 @keyframes fadeIn {
@@ -648,23 +650,10 @@ body.theme-light {
     transform: translateY(0);
   }
 }
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.25;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   #c {
     animation: none;
     opacity: 1;
-  }
-  .status-dot {
-    animation: none;
   }
 }
 
@@ -741,14 +730,6 @@ body.theme-light {
 
   #panel-projects.active {
     padding: 5rem 1.25rem 2rem;
-  }
-
-  .status-group {
-    bottom: 1.25rem;
-    right: 1.25rem;
-    gap: 0.6rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
   }
 }
 
