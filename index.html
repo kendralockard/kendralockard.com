@@ -12,158 +12,17 @@
 
     <div class="ui">
       <header class="nav">
-        <a href="/" class="brand hidden" id="home-link">Kendra Lockard</a>
+        <a href="/" class="brand">Kendra Lockard</a>
         <ul class="nav-links">
-          <li><a href="/work" id="work-link">Work</a></li>
-          <li><a href="/projects" id="projects-link">Projects</a></li>
-          <li><a href="/contact" id="contact-link">Contact</a></li>
+          <li><a href="/work">Work</a></li>
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/contact">Contact</a></li>
         </ul>
       </header>
 
       <div class="identity">
         <h1 class="name">Kendra Lockard</h1>
         <p class="role">// Software Engineer &middot; Web Developer</p>
-      </div>
-
-      <div class="reveal-stage" id="reveal-stage" aria-hidden="true">
-        <p class="reveal-label" id="reveal-label"></p>
-        <div class="reveal-content" id="reveal-content">
-          <div class="reveal-panel" id="panel-work" data-label="// Work">
-            <p class="reveal-label">// Work</p>
-            <ul class="work-list">
-              <li>
-                <a href="https://thalolabs.com" target="_blank" rel="noopener"
-                  >Thalo Labs</a
-                >
-                &middot; Senior Software Engineer
-              </li>
-              <li>
-                <a href="https://www.teecom.com" target="_blank" rel="noopener"
-                  >TEECOM</a
-                >
-                &middot; Senior Software Engineer
-              </li>
-              <li>
-                <a href="https://www.oberlin.edu" target="_blank" rel="noopener"
-                  >Oberlin College</a
-                >
-                &middot; Web Development Instructor
-              </li>
-              <li>Freelance &middot; Web Developer</li>
-            </ul>
-
-            <div class="panel-subsection">
-              <p class="reveal-label">// Writings</p>
-              <ul class="work-list">
-                <li>
-                  <a
-                    href="https://www.buildingsascode.com/p/buildings-as-code-in-every-phase"
-                    target="_blank"
-                    rel="noopener"
-                    >Buildings as Code in Every Phase</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="reveal-panel" id="panel-projects" data-label="// Projects">
-            <div class="site-carousel" id="site-carousel">
-              <div class="site-slides">
-                <div class="site-card active">
-                  <div class="site-frame">
-                    <iframe
-                      src="https://walkwithavalon.com"
-                      title="Walk with Avalon"
-                      loading="lazy"
-                    ></iframe>
-                  </div>
-                  <a
-                    class="site-name"
-                    href="https://walkwithavalon.com"
-                    target="_blank"
-                    rel="noopener"
-                    >Walk with Avalon &#8599;</a
-                  >
-                </div>
-                <div class="site-card">
-                  <div class="site-frame">
-                    <iframe
-                      src="https://noahwoodfragrances.netlify.app"
-                      title="Noah Wood Fragrances"
-                      loading="lazy"
-                    ></iframe>
-                  </div>
-                  <a
-                    class="site-name"
-                    href="https://noahwoodfragrances.netlify.app"
-                    target="_blank"
-                    rel="noopener"
-                    >Noah Wood Fragrances &#8599;</a
-                  >
-                </div>
-              </div>
-              <div class="site-carousel-controls">
-                <button
-                  type="button"
-                  class="site-carousel-btn"
-                  id="site-prev"
-                  aria-label="Previous site"
-                >
-                  &#8592;
-                </button>
-                <div class="site-carousel-dots">
-                  <button
-                    type="button"
-                    class="site-dot active"
-                    data-index="0"
-                    aria-label="Show Walk with Avalon"
-                  ></button>
-                  <button
-                    type="button"
-                    class="site-dot"
-                    data-index="1"
-                    aria-label="Show Noah Wood Fragrances"
-                  ></button>
-                </div>
-                <button
-                  type="button"
-                  class="site-carousel-btn"
-                  id="site-next"
-                  aria-label="Next site"
-                >
-                  &#8594;
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="reveal-panel" id="panel-contact" data-label="// Contact">
-            <p class="reveal-label">// Contact</p>
-            <form
-              name="contact"
-              method="POST"
-              action="/thanks/"
-              data-netlify="true"
-              netlify-honeypot="bot-field"
-              class="contact-form"
-            >
-              <input type="hidden" name="form-name" value="contact" />
-              <p class="hp-field">
-                <label>
-                  Don't fill this out if you're human:
-                  <input name="bot-field" tabindex="-1" autocomplete="off" />
-                </label>
-              </p>
-              <label>Name<input type="text" name="name" required /></label>
-              <label>Email<input type="email" name="email" required /></label>
-              <label
-                >Message<textarea name="message" rows="5" required></textarea>
-              </label>
-              <button type="submit">Send</button>
-            </form>
-          </div>
-        </div>
       </div>
 
       <div class="status-group">
@@ -174,7 +33,6 @@
     </div>
 
     <script src="/js/grid.js"></script>
-    <script src="/js/about.js"></script>
-    <script src="/js/carousel.js"></script>
+    <script src="/js/ui.js"></script>
   </body>
 </html>

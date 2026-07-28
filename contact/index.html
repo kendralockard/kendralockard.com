@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact — Kendra Lockard</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="scanlines"></div>
+
+    <div class="ui">
+      <header class="nav">
+        <a href="/" class="brand">Kendra Lockard</a>
+        <ul class="nav-links">
+          <li><a href="/work">Work</a></li>
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </header>
+
+      <div class="page-stage">
+        <p class="reveal-label">// Contact</p>
+        <form
+          name="contact"
+          method="POST"
+          action="/thanks/"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="contact-form"
+        >
+          <input type="hidden" name="form-name" value="contact" />
+          <p class="hp-field">
+            <label>
+              Don't fill this out if you're human:
+              <input name="bot-field" tabindex="-1" autocomplete="off" />
+            </label>
+          </p>
+          <label>Name<input type="text" name="name" required /></label>
+          <label>Email<input type="email" name="email" required /></label>
+          <label
+            >Message<textarea name="message" rows="5" required></textarea>
+          </label>
+          <button type="submit">Send</button>
+        </form>
+      </div>
+
+      <div class="status-group">
+        <div class="status-dot"></div>
+        <span>ONLINE</span>
+        <span id="coords">X:+0.000 &middot; Y:+0.000</span>
+      </div>
+    </div>
+
+    <script src="/js/ui.js"></script>
+  </body>
+</html>

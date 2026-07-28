@@ -93,11 +93,6 @@ body {
   outline: none;
 }
 
-.brand.hidden {
-  visibility: hidden;
-  pointer-events: none;
-}
-
 .nav-links {
   display: flex;
   gap: 2.5rem;
@@ -171,16 +166,6 @@ body {
   white-space: nowrap;
 }
 
-/* ── Reveal stage — sits directly on the background, no panel chrome ───────
-   Shared by any nav section (About, Work, ...) that replaces the identity
-   block. `left` is set at runtime by about.js to match identity's own left
-   edge, so revealed text lines up with where the name/role used to be. */
-
-.identity.hidden {
-  visibility: hidden;
-  pointer-events: none;
-}
-
 .back-link {
   font-family: "Avex", "Courier New", monospace;
   font-size: 0.8rem;
@@ -204,18 +189,19 @@ body {
   outline: none;
 }
 
-.reveal-stage {
-  position: absolute;
+/* ── Static page stage — Work/Contact standalone pages. Same centered
+   position as .identity, fixed via CSS since there's no identity block on
+   these pages to measure against. */
+
+.page-stage {
+  position: fixed;
+  left: 30%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: min(620px, calc(100% - 3rem));
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.reveal-stage.visible {
-  visibility: visible;
   pointer-events: auto;
 }
 
@@ -431,14 +417,6 @@ body {
   background: rgba(0, 229, 255, 0.82);
 }
 
-.contact-bio {
-  margin-bottom: 3rem;
-}
-
-#panel-contact .reveal-label {
-  margin-bottom: 0.6rem;
-}
-
 .contact-form {
   display: flex;
   flex-direction: column;
@@ -529,6 +507,80 @@ body {
     0 0 14px rgba(240, 40, 138, 0.3);
   flex-shrink: 0;
   animation: blink 3s ease-in-out infinite;
+}
+
+/* ── Light theme — off-white background, dark-teal accent in place of the
+   cyan-on-dark palette. Opacities match the dark theme's so hover/active
+   states read the same way. Applied via a `theme-light` class on <body>. */
+
+body.theme-light {
+  background: #f4f1ec;
+}
+
+.theme-light .brand {
+  color: #030711;
+}
+
+.theme-light .brand:hover,
+.theme-light .brand:focus-visible {
+  color: rgba(0, 106, 120, 0.82);
+}
+
+.theme-light .nav-links a {
+  color: rgba(0, 106, 120, 0.5);
+}
+
+.theme-light .nav-links a:hover,
+.theme-light .nav-links a:focus-visible {
+  color: rgba(0, 106, 120, 0.82);
+}
+
+.theme-light .site-frame {
+  border-color: rgba(0, 106, 120, 0.25);
+}
+
+.theme-light .site-card:hover .site-frame,
+.theme-light .site-card:focus-within .site-frame {
+  border-color: rgba(0, 106, 120, 0.6);
+}
+
+.theme-light .site-name {
+  color: rgba(0, 106, 120, 0.5);
+  border-bottom-color: rgba(0, 106, 120, 0.35);
+}
+
+.theme-light .site-name:hover,
+.theme-light .site-name:focus-visible {
+  color: rgba(0, 106, 120, 0.82);
+  border-color: rgba(0, 106, 120, 0.6);
+}
+
+.theme-light .site-carousel-btn {
+  color: rgba(0, 106, 120, 0.5);
+  border-color: rgba(0, 106, 120, 0.3);
+}
+
+.theme-light .site-carousel-btn:hover,
+.theme-light .site-carousel-btn:focus-visible {
+  color: rgba(0, 106, 120, 0.82);
+  border-color: rgba(0, 106, 120, 0.6);
+}
+
+.theme-light .site-dot {
+  background: rgba(0, 106, 120, 0.25);
+}
+
+.theme-light .site-dot:hover,
+.theme-light .site-dot:focus-visible {
+  background: rgba(0, 106, 120, 0.6);
+}
+
+.theme-light .site-dot.active {
+  background: rgba(0, 106, 120, 0.82);
+}
+
+.theme-light .status-group {
+  color: rgba(0, 106, 120, 0.4);
 }
 
 /* ── Keyframes ───────────────────────────────────────────────────────────── */
@@ -622,8 +674,11 @@ body {
     white-space: normal;
   }
 
-  .reveal-stage {
+  .page-stage {
+    left: 1.5rem;
     right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
     width: calc(100% - 3rem);
   }
 
