@@ -278,15 +278,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6.5rem 3rem 4rem;
+  padding: 5rem 1.5rem 1.5rem;
 }
 
 .site-carousel {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.6rem;
   width: 100%;
-  max-width: 1400px;
+  max-width: 1700px;
   height: 100%;
   pointer-events: auto;
 }
@@ -378,27 +378,35 @@ body {
 
 .site-carousel-btn {
   font-family: "Avex", "Courier New", monospace;
-  font-size: 0.9rem;
-  color: rgba(0, 229, 255, 0.5);
+  font-size: 1.1rem;
+  color: rgba(0, 229, 255, 0.4);
   background: transparent;
-  border: 1px solid rgba(0, 229, 255, 0.3);
-  border-radius: 2px;
-  width: 2rem;
-  height: 2rem;
+  border: none;
+  width: 1.75rem;
+  height: 1.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition:
     color 0.2s,
-    border-color 0.2s;
+    transform 0.2s;
 }
 
 .site-carousel-btn:hover,
 .site-carousel-btn:focus-visible {
   color: rgba(0, 229, 255, 0.82);
-  border-color: rgba(0, 229, 255, 0.6);
   outline: none;
+}
+
+#site-prev:hover,
+#site-prev:focus-visible {
+  transform: translateX(-2px);
+}
+
+#site-next:hover,
+#site-next:focus-visible {
+  transform: translateX(2px);
 }
 
 .site-carousel-dots {
@@ -541,14 +549,12 @@ body.theme-light {
 }
 
 .theme-light .site-carousel-btn {
-  color: rgba(0, 72, 84, 0.85);
-  border-color: rgba(0, 72, 84, 0.45);
+  color: rgba(0, 72, 84, 0.55);
 }
 
 .theme-light .site-carousel-btn:hover,
 .theme-light .site-carousel-btn:focus-visible {
   color: #004854;
-  border-color: rgba(0, 72, 84, 0.85);
 }
 
 .theme-light .site-dot {
